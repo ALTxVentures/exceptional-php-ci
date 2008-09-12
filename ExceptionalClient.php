@@ -116,12 +116,12 @@ class ExceptionData
 $env
   </environment>
   <session>
-
+$session
   </session>
   <rails_root>/</rails_root>
   <url>$this->request_uri</url>
   <parameters>
-
+$request_parameters
   </parameters>
   <occurred_at>$now</occurred_at>
   <message>$message</message>
@@ -148,12 +148,11 @@ $env
     function _arrayToXML($array)
     {
         if(!is_array($array) || empty($array)) {
-            return "   <no>values</no>";
+            return "";
         }
 
         $return_value = array();
         foreach($array AS $key => $value) {
-			$key = strToLower($key);
             $return_value[] = "    <$key>$value</$key>";
         }
         
