@@ -7,6 +7,13 @@
  **/
 class ExceptionalClient
 {
+    /**
+     * Array holding all exceptions that were thrown in a request
+     *
+     * @var array exception stack
+     **/
+    var $exceptions = array();
+    
 	/**
 	 * Installs the ExceptinoalClient class as the default exception handler
 	 *
@@ -47,6 +54,10 @@ class ExceptionalClient
 	 **/
 	function __destruct()
 	{
+		if(!is_array($this->exceptions)) {
+			return;
+		}
+
 		// send stack of exceptions to getexceptional
 		foreach($this->exceptions AS $exception) {
 			$this->send_exception($exception);
@@ -127,10 +138,11 @@ class ExceptionData
 		$env = $this->envToXML();
 		$session = $this->sessionToXML();
 		$request_parameters = $this->requestToXML();
-		
+
 		$trace = $this->exception->getTrace();
 		$class = $trace[0]["class"];
 		$function = $trace[0]["function"];
+
 		$message = $this->exception->getMessage();
 		$backtrace = $this->exception->getTraceAsString();
 		$error_class = get_class($this->exception);
