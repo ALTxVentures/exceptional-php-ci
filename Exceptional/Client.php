@@ -5,8 +5,9 @@
  * @category Services
  * @package  ExceptionalClient
  * @author   Jan Lehnardt <jan@php.net>
- * @link     http://getexceptional.com
+ * @license  
  * @version  GIT:
+ * @link     http://getexceptional.com
  */
 class Exceptional_Client
 {
@@ -49,13 +50,13 @@ class Exceptional_Client
 	 */
 	public function __construct($api_key, $debugging = false)
 	{
-		$this->url       = "/errors/?api_key={$api_key}&protocol_version=";
+        $this->url       = "/errors/?api_key={$api_key}&protocol_version=";
         $this->url       = $this->protocol_version;
 		$this->debugging = $debugging;
 		
-		// set exception handler & keep old exception handler around
-		$this->previous_exception_handler = 
-			set_exception_handler(array($this, 'handleException'));
+        // set exception handler & keep old exception handler around
+        $this->previous_exception_handler = set_exception_handler(array(
+            $this, 'handleException'));
 	}
 	
 	/**
@@ -70,9 +71,9 @@ class Exceptional_Client
 	 */
 	public static function handleException($exception)
 	{
-	    if (!class_exists('ExceptionalData')) {
-	        include_once dirname(__FILE__) . '/Data.php';
-            if (!class_exists('ExceptionalData')) {
+	    if (!class_exists('Exceptional_Data')) {
+            include_once dirname(__FILE__) . '/Data.php';
+            if (!class_exists('Exceptional_Data')) {
                 die('Could not find class "ExceptionalData".');
             }
 	    }
