@@ -9,7 +9,7 @@
  * @version  GIT:
  * @see      ExceptionalClient
  */
-class ExceptionalData
+class Exceptional_Data
 {
 	public function __construct($exception)
 	{
