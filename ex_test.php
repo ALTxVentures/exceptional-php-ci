@@ -2,9 +2,9 @@ Testing stuff
 <?php
 flush();
 // example usage of ExceptionalClient
-include "ExceptionalClient.php";
+include dirname(__FILE__) . '/Exceptional/Client.php';
 
-$_exceptional = new ExceptionalClient("f6f5bd040eefcf518ab2dccdad8386185c7a4395");
+$_exceptional = new Exceptional_Client('f6f5bd040eefcf518ab2dccdad8386185c7a4395');
 
 class Foo
 {
