@@ -50,9 +50,9 @@ class Exceptional_Client
      */
     public function __construct($api_key, $debugging = false)
     {
-        $this->url       = "/errors/?api_key={$api_key}&protocol_version=";
-        $this->url       = $this->protocol_version;
-        $this->debugging = $debugging;
+        $this->url        = "/errors/?api_key={$api_key}&protocol_version=";
+        $this->url       .= $this->protocol_version;
+        $this->debugging  = $debugging;
 		
         // set exception handler & keep old exception handler around
         $this->previous_exception_handler = set_exception_handler(array(
