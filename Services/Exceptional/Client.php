@@ -91,10 +91,11 @@ class Services_Exceptional_Client
      */
     public function __construct($api_key, $debugging = false)
     {
-        $this->url        = "/errors/?api_key={$api_key}&protocol_version=";
-        $this->url       .= $this->protocol_version;
-        $this->debugging  = $debugging;
-		
+        $this->url  = "/errors/?api_key={$api_key}&protocol_version=";
+        $this->url .= $this->protocol_version;
+
+        $this->debugging = $debugging;
+
         // set exception handler & keep old exception handler around
         $this->previous_exception_handler = set_exception_handler(array(
             $this, 'handleException'));
@@ -125,7 +126,7 @@ class Services_Exceptional_Client
             $this->previous_exception_handler($exception);
         }
     }
-	
+
     /**
      * Destructor! Sends all collected exceptions to Exceptional
      * 
@@ -143,12 +144,12 @@ class Services_Exceptional_Client
             $this->sendException($exception);
         }
     }
-	
+
     /**
      * Does the actual sending of an exception
      *
-     * @param Exception exception object, gets passed in by PHP
-     * 
+     * @param Exception $exception object, gets passed in by PHP
+     *
      * @return void
      * @uses   self::makeRequest()
      */
@@ -157,7 +158,7 @@ class Services_Exceptional_Client
         $body = $exception->toXML();
         $this->makeRequest($this->url, $body);
     }
-    
+
     /**
      * Sends a POST request
      *
@@ -172,30 +173,30 @@ class Services_Exceptional_Client
      */
     protected function makeRequest($url, $post_data)
     {
-    	$s = fsockopen($this->host, $this->port, $errno, $errstr);
-    	if (!$s || empty($post_data)) { 
-    	    return false;
-    	}
-    
-    	$request = "POST $url HTTP/1.1\r\nHost: $this->host\r\n";
-    	$request .= "Accept: */*\r\n";
-    	$request .= "User-Agent: exception-php-client 0.1\r\n";
-    	$request .= "Content-Type: text/xml\r\n";
-    	$request .= "Connection: close\r\n";
-    	$request .= "Content-Length: ".strlen($post_data)."\r\n\r\n";
-    
-    	$request .= "$post_data\r\n";
-    
-    	fwrite($s, $request);
-    
-    	if ($this->debugging === false) {
-    		return; // do not wait for response, we don't care
-    	}
-    	// for debugging
-    	$response = '';
-    	while (!feof($s)) {
-    	    $response .= fgets($s);
-    	}
+        $s = fsockopen($this->host, $this->port, $errno, $errstr);
+        if (!$s || empty($post_data)) { 
+            return false;
+        }
+
+        $request  = "POST $url HTTP/1.1\r\nHost: $this->host\r\n";
+        $request .= "Accept: */*\r\n";
+        $request .= "User-Agent: exception-php-client 0.1\r\n";
+        $request .= "Content-Type: text/xml\r\n";
+        $request .= "Connection: close\r\n";
+        $request .= "Content-Length: ".strlen($post_data)."\r\n\r\n";
+        $request .= "$post_data\r\n";
+
+        fwrite($s, $request);
+
+        if ($this->debugging === false) {
+            return; // do not wait for response, we don't care
+        }
+
+        // for debugging
+        $response = '';
+        while (!feof($s)) {
+            $response .= fgets($s);
+        }
         var_dump($response);
     }
 }
