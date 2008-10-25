@@ -60,13 +60,15 @@ class Services_Exceptional_Data
     protected $exception;
     
     /**
-     * @return Services_Exceptional_Data
-     * 
+     * __construct
+     *
      * @param Exception $exception An Exception! :-)
+     * 
+     * @return Services_Exceptional_Data
      */
     public function __construct(Exception $exception)
     {
-    	$this->exception = $exception;
+        $this->exception = $exception;
     }
 
     /**
@@ -74,54 +76,61 @@ class Services_Exceptional_Data
      * environment to the format getexceptional.com expects when reporting.
      * 
      * @return string
+     *
+     * @todo Check Agent ID.
      */
     public function toXML()
     {
-    	$user_ip        = $_SERVER['REMOTE_ADDR'];
-    	$host_ip        = $_SERVER['SERVER_ADDR'];
-    	$request_uri    = $_SERVER['REQUEST_URI'];
-    	$document_root  = $_SERVER['DOCUMENT_ROOT'];
-    	$request_method = $_SERVER['REQUEST_METHOD'];
+        $user_ip        = $_SERVER['REMOTE_ADDR'];
+        $host_ip        = $_SERVER['SERVER_ADDR'];
+        $request_uri    = $_SERVER['REQUEST_URI'];
+        $document_root  = $_SERVER['DOCUMENT_ROOT'];
+        $request_method = $_SERVER['REQUEST_METHOD'];
+
+        $now = date("D M j H:i:s O Y");
     
-    	$now = date("D M j H:i:s O Y");
-    
-    	$env                = $this->envToXML();
-    	$session            = $this->sessionToXML();
-    	$request_parameters = $this->requestToXML();
-    
-    	$trace    = $this->exception->getTrace();
-    	$class    = $trace[0]['class'];
-    	$function = $trace[0]['function'];
-    
-    	$message     = $this->exception->getMessage();
-    	$backtrace   = $this->exception->getTraceAsString();
-    	$error_class = get_class($this->exception);
-    
-    	return 
-"<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<error>
-  <agent_id>cc25f30e09d5d2e14cbdc7b0e1da30ba0896a58c</agent_id>
-  <controller_name>$class</controller_name>
-  <error_class>$error_class</error_class>
-  <action_name>$function</action_name>
-  <environment>
-$env
-  </environment>
-  <session>
-$session
-  </session>
-  <rails_root>$document_root</rails_root>
-  <url>$request_uri</url>
-  <parameters>
-$request_parameters
-  </parameters>
-  <occurred_at>$now</occurred_at>
-  <message>$message</message>
-  <backtrace>$backtrace</backtrace>
-</error>";
+        $env                = $this->envToXML();
+        $session            = $this->sessionToXML();
+        $request_parameters = $this->requestToXML();
+
+        $trace    = $this->exception->getTrace();
+        $class    = $trace[0]['class'];
+        $function = $trace[0]['function'];
+
+        $message     = $this->exception->getMessage();
+        $backtrace   = $this->exception->getTraceAsString();
+        $error_class = get_class($this->exception);
+
+        $response  = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        $response .= "<error>\n";
+        $response .= "\t<agent_id>";
+        $response .= "cc25f30e09d5d2e14cbdc7b0e1da30ba0896a58c";
+        $response .= "</agent_id>\n";
+        $response .= "\t<controller_name>$class</controller_name>\n";
+        $response .= "\t<error_class>$error_class</error_class>\n";
+        $response .= "\t<action_name>$function</action_name>\n";
+        $response .= "\t<environment>\n";
+        $response .= "\t$env\n";
+        $response .= "\t</environment>\n";
+        $response .= "\t<session>\n";
+        $response .= "\t$session\n";
+        $response .= "\t</session>\n";
+        $response .= "\t<rails_root>$document_root</rails_root>\n";
+        $response .= "\t<url>$request_uri</url>\n";
+        $response .= "\t<parameters>\n";
+        $response .= "\t$request_parameters\n";
+        $response .= "\t</parameters>\n";
+        $response .= "\t<occurred_at>$now</occurred_at>\n";
+        $response .= "\t<message>$message</message>\n";
+        $response .= "\t<backtrace>$backtrace</backtrace>\n";
+        $response .= "\t</error>";
+
+        return $response;
     }
     
     /**
+     * Convert to the $_ENV variable to XML.
+     *
      * @return string
      * @uses   $_ENV
      * @uses   self::arrayToXml()
@@ -132,6 +141,8 @@ $request_parameters
     }
     
     /**
+     * Convert $_SESSION to XML.
+     *
      * @return string
      * @uses   $_SESSION
      * @uses   self::arrayToXml()
@@ -142,6 +153,8 @@ $request_parameters
     }
     
     /**
+     * Convert $_REQUEST to XML.
+     *
      * @return string
      * @uses   $_REQUEST
      * @uses   self::arrayToXml()
@@ -152,20 +165,22 @@ $request_parameters
     }
 
     /**
-     * @return mixed
+     * Convert an array to XML.
      * 
      * @param array $array An array! :-)
+     *
+     * @return mixed
      */
     protected function arrayToXML($array)
     {
-    	if (!is_array($array) || empty($array)) {
-    	    return '';
-    	}
+        if (!is_array($array) || empty($array)) {
+            return '';
+        }
     
-    	$return_value = '';
-    	foreach ($array as $key => $value) {
-    	    $return_value .= "	   <{$key}>{$value}</{$key}>\n";
-    	}
-    	return $return_value;
+        $return_value = '';
+        foreach ($array as $key => $value) {
+            $return_value .= "	   <{$key}>{$value}</{$key}>\n";
+        }
+        return $return_value;
     }
 }
