@@ -17,7 +17,7 @@
   <active>yes</active>
  </developer>
  <date>2008-10-25</date>
- <time>21:30:00</time>
+ <time>23:50:00</time>
  <version>
   <release>0.0.1</release>
   <api>0.0.1</api>
@@ -32,6 +32,7 @@
 * released using The (new) BSD License
 * library is managable using the PEAR installer
 * class layout adheres to the PEAR CS (classes split in multiple files, directories)
+* works from CLI :-)
  </notes>
  <contents>
   <dir name="/">
@@ -78,6 +79,7 @@
 * released using The (new) BSD License
 * library is managable using the PEAR installer
 * class layout adheres to the PEAR CS (classes split in multiple files, directories)
+* works from CLI :-)
    </notes>
   </release>
  </changelog>
