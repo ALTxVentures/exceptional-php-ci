@@ -115,7 +115,7 @@ class Services_Exceptional_Client
         if (!class_exists('Services_Exceptional_Data')) {
             include_once dirname(__FILE__) . '/Data.php';
             if (!class_exists('Services_Exceptional_Data')) {
-                die('Could not find class "ExceptionalData".');
+                die('Could not find class "Services_Exceptional_Data".');
             }
         }
         $this->exceptions[] = new Services_Exceptional_Data($exception);
@@ -134,14 +134,14 @@ class Services_Exceptional_Client
      */
     public function __destruct()
     {
-    	if (!is_array($this->exceptions)) {
-    	    return;
-    	}
-    
-    	// send stack of exceptions to getexceptional
-    	foreach ($this->exceptions as $exception) {
-    	    $this->sendException($exception);
-    	}
+        if (!is_array($this->exceptions)) {
+            return;
+        }
+
+        // send stack of exceptions to getexceptional
+        foreach ($this->exceptions as $exception) {
+            $this->sendException($exception);
+        }
     }
 	
     /**
@@ -192,7 +192,7 @@ class Services_Exceptional_Client
     		return; // do not wait for response, we don't care
     	}
     	// for debugging
-    	$response = "";
+    	$response = '';
     	while (!feof($s)) {
     	    $response .= fgets($s);
     	}
