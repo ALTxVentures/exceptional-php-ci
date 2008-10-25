@@ -35,7 +35,7 @@
  * @author   Jan Lehnardt <jan@php.net>
  * @author   Till Klampaeckel <till@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
- * @version  GIT:
+ * @version  GIT: $Id$
  * @link     http://getexceptional.com
  */
 
