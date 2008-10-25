@@ -81,11 +81,11 @@ class Services_Exceptional_Data
      */
     public function toXML()
     {
-        $user_ip        = $_SERVER['REMOTE_ADDR'];
-        $host_ip        = $_SERVER['SERVER_ADDR'];
-        $request_uri    = $_SERVER['REQUEST_URI'];
-        $document_root  = $_SERVER['DOCUMENT_ROOT'];
-        $request_method = $_SERVER['REQUEST_METHOD'];
+        $user_ip        = @$_SERVER['REMOTE_ADDR'];
+        $host_ip        = @$_SERVER['SERVER_ADDR'];
+        $request_uri    = @$_SERVER['REQUEST_URI'];
+        $document_root  = @$_SERVER['DOCUMENT_ROOT'];
+        $request_method = @$_SERVER['REQUEST_METHOD'];
 
         $now = date("D M j H:i:s O Y");
     
