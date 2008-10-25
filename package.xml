@@ -28,22 +28,25 @@
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">The BSD License</license>
  <notes>
-
+* initial release of the forked php-exceptional library
+* released using The (new) BSD License
+* library is managable using the PEAR installer
+* class layout adheres to the PEAR CS (classes split in multiple files, directories)
  </notes>
  <contents>
   <dir name="/">
    <dir name="Services">
+    <file name="Exceptional.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
     <dir name="Exceptional">
-     <file name="Client.php" role="php">
-      <tasks:replace from="@package_version@" to="version" type="package-info" />
-     </file>
      <file name="Data.php" role="php">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
      </file>
     </dir>
    </dir>
    <dir name="tests">
-    <file role="test" baseinstalldir="Exceptional" name="ext_test.php" />
+    <file role="test" baseinstalldir="Exceptional" name="ex_test.php" />
    </dir>
   </dir>
  </contents>
@@ -71,7 +74,10 @@
    <date>2008-10-25</date>
    <license uri="http://www.opensource.org/licenses/bsd-license.php">The BSD License</license>
    <notes>
-
+* initial release of the forked php-exceptional library
+* released using The (new) BSD License
+* library is managable using the PEAR installer
+* class layout adheres to the PEAR CS (classes split in multiple files, directories)
    </notes>
   </release>
  </changelog>
