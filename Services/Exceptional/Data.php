@@ -149,6 +149,9 @@ class Services_Exceptional_Data
      */
     protected function sessionToXML()
     {
+        if (!isset($_SESSION)) {
+            return '';
+        }
         return $this->arrayToXML($_SESSION);
     }
     
@@ -161,6 +164,9 @@ class Services_Exceptional_Data
      */
     protected function requestToXML()
     {
+        if (!isset($_REQUEST)) {
+            return '';
+        }
         return $this->arrayToXML($_REQUEST);
     }
 
