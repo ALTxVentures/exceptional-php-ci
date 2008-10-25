@@ -3,13 +3,14 @@
  * Exception handler and client for getexceptional.com
  *
  * @category Services
- * @package  ExceptionalClient
+ * @package  Services_Exceptional_Client
  * @author   Jan Lehnardt <jan@php.net>
+ * @author   Till Klampaeckel <till@php.net>
  * @license  
  * @version  GIT:
  * @link     http://getexceptional.com
  */
-class Exceptional_Client
+class Services_Exceptional_Client
 {
     /**
      * Array holding all exceptions that were thrown in a request
@@ -71,13 +72,13 @@ class Exceptional_Client
      */
     public static function handleException($exception)
     {
-        if (!class_exists('Exceptional_Data')) {
+        if (!class_exists('Services_Exceptional_Data')) {
             include_once dirname(__FILE__) . '/Data.php';
-            if (!class_exists('Exceptional_Data')) {
+            if (!class_exists('Services_Exceptional_Data')) {
                 die('Could not find class "ExceptionalData".');
             }
 	    }
-        $this->exceptions[] = new ExceptionalData($exception);
+        $this->exceptions[] = new Services_Exceptional_Data($exception);
 
         // If there's a previous exception handler, we call that as well
         if ($this->previous_exception_handler) {
@@ -147,7 +148,7 @@ class Exceptional_Client
     
     	fwrite($s, $request);
     
-    	if($this->debugging === false) {
+    	if ($this->debugging === false) {
     		return; // do not wait for response, we don't care
     	}
     	// for debugging

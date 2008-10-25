@@ -3,21 +3,27 @@
  * ExceptionalData is an exception handler used by {@link ExceptionalClient}
  *
  * @category Services
- * @package  ExceptionalClient
+ * @package  Services_Exceptional_Data
  * @author   Jan Lehnardt <jan@php.net>
+ * @author   Till Klampaeckel <till@php.net>
  * @license  
  * @version  GIT:
  * @link     http://getexceptional.com
- * @see      ExceptionalClient
+ * @see      Services_Exceptional_Client
  */
-class Exceptional_Data
+class Services_Exceptional_Data
 {
     /**
-     * @return Exceptional_Data
+     * @var mixed $exception Exception
+     */
+    protected $exception;
+    
+    /**
+     * @return Services_Exceptional_Data
      * 
      * @param Exception $exception An Exception! :-)
      */
-    public function __construct($exception)
+    public function __construct(Exception $exception)
     {
     	$this->exception = $exception;
     }
@@ -30,11 +36,11 @@ class Exceptional_Data
      */
     public function toXML()
     {
-    	$user_ip        = $_SERVER["REMOTE_ADDR"];
-    	$host_ip        = $_SERVER["SERVER_ADDR"];
-    	$request_uri    = $_SERVER["REQUEST_URI"];
-    	$document_root  = $_SERVER["DOCUMENT_ROOT"];
-    	$request_method = $_SERVER["REQUEST_METHOD"];
+    	$user_ip        = $_SERVER['REMOTE_ADDR'];
+    	$host_ip        = $_SERVER['SERVER_ADDR'];
+    	$request_uri    = $_SERVER['REQUEST_URI'];
+    	$document_root  = $_SERVER['DOCUMENT_ROOT'];
+    	$request_method = $_SERVER['REQUEST_METHOD'];
     
     	$now = date("D M j H:i:s O Y");
     
@@ -43,8 +49,8 @@ class Exceptional_Data
     	$request_parameters = $this->requestToXML();
     
     	$trace    = $this->exception->getTrace();
-    	$class    = $trace[0]["class"];
-    	$function = $trace[0]["function"];
+    	$class    = $trace[0]['class'];
+    	$function = $trace[0]['function'];
     
     	$message     = $this->exception->getMessage();
     	$backtrace   = $this->exception->getTraceAsString();
@@ -103,7 +109,7 @@ $request_parameters
     {
         return $this->arrayToXML($_REQUEST);
     }
-    
+
     /**
      * @return mixed
      * 
@@ -121,4 +127,4 @@ $request_parameters
     	}
     	return $return_value;
     }
-} /* class ExceptionalData */
+}
