@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category Services
- * @package  Services_Exceptional_Data
+ * @package  Services_Exceptional
  * @author   Jan Lehnardt <jan@php.net>
  * @author   Till Klampaeckel <till@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
@@ -41,16 +41,16 @@
 
 /**
  * Services_Exceptional_Data is an exception handler used by
- * {@link Services_Exceptional_Client}
+ * {@link Services_Exceptional}
  *
  * @category Services
- * @package  Services_Exceptional_Data
+ * @package  Services_Exceptional
  * @author   Jan Lehnardt <jan@php.net>
  * @author   Till Klampaeckel <till@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
  * @version  Release: @package_version@
  * @link     http://getexceptional.com
- * @see      Services_Exceptional_Client
+ * @see      Services_Exceptional
  */
 class Services_Exceptional_Data
 {

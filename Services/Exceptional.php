@@ -31,7 +31,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @category Services
- * @package  Services_Exceptional_Data
+ * @package  Services_Exceptional
  * @author   Jan Lehnardt <jan@php.net>
  * @author   Till Klampaeckel <till@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
@@ -43,14 +43,14 @@
  * Exception handler and client for getexceptional.com
  *
  * @category Services
- * @package  Services_Exceptional_Client
+ * @package  Services_Exceptional
  * @author   Jan Lehnardt <jan@php.net>
  * @author   Till Klampaeckel <till@php.net>
  * @license  http://www.opensource.org/licenses/bsd-license.php The BSD License
  * @version  Release: @package_version@
  * @link     http://getexceptional.com
  */
-class Services_Exceptional_Client
+class Services_Exceptional
 {
     /**
      * Array holding all exceptions that were thrown in a request
@@ -81,12 +81,12 @@ class Services_Exceptional_Client
     public $debugging;
     
     /**
-     * Installs the ExceptinoalClient class as the default exception handler
+     * Installs the Services_Exceptiinal as the default exception handler
      *
      * @param string  $api_key   from getexceptional.com
      * @param boolean $debugging flag
      * 
-     * @return ExceptionalClient
+     * @return Services_Exceptional
      * @todo   Do something nifty with all the configuration.
      */
     public function __construct($api_key, $debugging = false)
@@ -114,7 +114,7 @@ class Services_Exceptional_Client
     public static function handleException($exception)
     {
         if (!class_exists('Services_Exceptional_Data')) {
-            include_once dirname(__FILE__) . '/Data.php';
+            include_once dirname(__FILE__) . '/Exceptional/Data.php';
             if (!class_exists('Services_Exceptional_Data')) {
                 die('Could not find class "Services_Exceptional_Data".');
             }
