@@ -117,7 +117,7 @@ class Services_Exceptional_Client
             if (!class_exists('Services_Exceptional_Data')) {
                 die('Could not find class "ExceptionalData".');
             }
-	    }
+        }
         $this->exceptions[] = new Services_Exceptional_Data($exception);
 
         // If there's a previous exception handler, we call that as well
