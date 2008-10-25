@@ -1,10 +1,10 @@
 Testing stuff
 <?php
 flush();
-// example usage of Services_Exceptional_Client
-include dirname(__FILE__) . '/../Services/Exceptional/Client.php';
+// example usage of Services_Exceptional
+include dirname(__FILE__) . '/../Services/Exceptional.php';
 
-$_exceptional = new Services_Exceptional_Client('f6f5bd040eefcf518ab2dccdad8386185c7a4395');
+$_exceptional = new Services_Exceptional('f6f5bd040eefcf518ab2dccdad8386185c7a4395');
 
 class Foo
 {
