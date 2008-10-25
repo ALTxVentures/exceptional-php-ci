@@ -57,28 +57,30 @@ class Services_Exceptional
      *
      * @var array exception stack
      * @see self::__destruct()
-     **/
-    public $exceptions = array();
+     */
+    public static $exceptions = array();
+
+    public static $previous_exception_handler;
 
     /**
      * @var string * getexceptional.com-related
      * @see self::__construct()
      */
-    public $url;
-    public $host = 'getexceptional.com';
-    public $port = 80;
+    public static $url;
+    public static $host = 'getexceptional.com';
+    public static $port = 80;
     
     /**
      * @var int $protocol_version getexceptional needs this.
      * @see self::__construct()
      */
-    public $protocol_version = 2;
+    public static $protocol_version = 2;
 
     /**
      * @var boolean $debugging A flag.
      * @see self::__construct()
      */
-    public $debugging;
+    public static $debugging;
     
     /**
      * Installs the Services_Exceptiinal as the default exception handler
@@ -91,13 +93,13 @@ class Services_Exceptional
      */
     public function __construct($api_key, $debugging = false)
     {
-        $this->url  = "/errors/?api_key={$api_key}&protocol_version=";
-        $this->url .= $this->protocol_version;
+        self::$url  = "/errors/?api_key={$api_key}&protocol_version=";
+        self::$url .= self::$protocol_version;
 
-        $this->debugging = $debugging;
+        self::$debugging = $debugging;
 
         // set exception handler & keep old exception handler around
-        $this->previous_exception_handler = set_exception_handler(array(
+        self::$previous_exception_handler = set_exception_handler(array(
             $this, 'handleException'));
     }
 
@@ -119,11 +121,11 @@ class Services_Exceptional
                 die('Could not find class "Services_Exceptional_Data".');
             }
         }
-        $this->exceptions[] = new Services_Exceptional_Data($exception);
+        self::$exceptions[] = new Services_Exceptional_Data($exception);
 
         // If there's a previous exception handler, we call that as well
-        if ($this->previous_exception_handler) {
-            $this->previous_exception_handler($exception);
+        if (self::$previous_exception_handler) {
+            self::$previous_exception_handler($exception);
         }
     }
 
@@ -135,13 +137,13 @@ class Services_Exceptional
      */
     public function __destruct()
     {
-        if (!is_array($this->exceptions)) {
+        if (!is_array(self::$exceptions)) {
             return;
         }
 
         // send stack of exceptions to getexceptional
-        foreach ($this->exceptions as $exception) {
-            $this->sendException($exception);
+        foreach (self::$exceptions as $exception) {
+            self::sendException($exception);
         }
     }
 
@@ -153,10 +155,10 @@ class Services_Exceptional
      * @return void
      * @uses   self::makeRequest()
      */
-    public function sendException($exception)
+    public static function sendException($exception)
     {
         $body = $exception->toXML();
-        $this->makeRequest($this->url, $body);
+        self::makeRequest(self::$url, $body);
     }
 
     /**
@@ -171,16 +173,18 @@ class Services_Exceptional
      * @uses self::$post
      * @uses self::$debugging
      */
-    protected function makeRequest($url, $post_data)
+    public static function makeRequest($url, $post_data)
     {
-        $s = fsockopen($this->host, $this->port, $errno, $errstr);
+        $s = fsockopen(self::$host, self::$port, $errno, $errstr);
         if (!$s || empty($post_data)) { 
             return false;
         }
 
-        $request  = "POST $url HTTP/1.1\r\nHost: $this->host\r\n";
+        $host = self::$host;
+
+        $request  = "POST $url HTTP/1.1\r\nHost: {$host}\r\n";
         $request .= "Accept: */*\r\n";
-        $request .= "User-Agent: exception-php-client 0.1\r\n";
+        $request .= "User-Agent: Services_Exceptional @package_version@\r\n";
         $request .= "Content-Type: text/xml\r\n";
         $request .= "Connection: close\r\n";
         $request .= "Content-Length: ".strlen($post_data)."\r\n\r\n";
@@ -188,7 +192,7 @@ class Services_Exceptional
 
         fwrite($s, $request);
 
-        if ($this->debugging === false) {
+        if (self::$debugging === false) {
             return; // do not wait for response, we don't care
         }
 
