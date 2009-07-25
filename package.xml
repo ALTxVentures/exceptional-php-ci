@@ -16,11 +16,11 @@
   <email>jan@php.net</email>
   <active>yes</active>
  </developer>
- <date>2008-10-25</date>
+ <date>2009-07-25</date>
  <time>23:50:00</time>
  <version>
-  <release>0.0.1</release>
-  <api>0.0.1</api>
+  <release>0.0.2</release>
+  <api>0.0.2</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -28,11 +28,10 @@
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">The BSD License</license>
  <notes>
-* initial release of the forked php-exceptional library
-* released using The (new) BSD License
-* library is managable using the PEAR installer
-* class layout adheres to the PEAR CS (classes split in multiple files, directories)
-* works from CLI :-)
+* added a test suite
+* converted example to 'real' test
+* added an example
+* added a README for github
  </notes>
  <contents>
   <dir name="/">
@@ -46,8 +45,12 @@
      </file>
     </dir>
    </dir>
+   <dir name="examples">
+    <file role="doc" baseinstalldir="Exceptional" name="example1.php" />
+   </dir>
    <dir name="tests">
-    <file role="test" baseinstalldir="Exceptional" name="ex_test.php" />
+    <file role="test" baseinstalldir="Exceptional" name="AllTests.php" />
+    <file role="test" baseinstalldir="Exceptional" name="test001.phpt" />
    </dir>
   </dir>
  </contents>
@@ -63,6 +66,24 @@
  </dependencies>
  <phprelease />
  <changelog>
+  <release>
+   <version>
+    <release>0.0.2</release>
+    <api>0.0.2</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2009-07-25</date>
+   <license uri="http://www.opensource.org/licenses/bsd-license.php">The BSD License</license>
+   <notes>
+* added a test suite
+* converted example to 'real' test
+* added an example
+* added a README for github
+   </notes>
+  </release>
   <release>
    <version>
     <release>0.0.1</release>
