@@ -1,19 +1,16 @@
-## Services_Exceptional
+# Exceptional-PHP
 
-Services_Exceptional is a wrapper for the API of http://getexceptional.com/.
+PHP wrapper for the http://getexceptional.com API
 
-In order to use it, you'll need an account on getexceptional.com and an API key.
+### Super simple setup
 
-### Installation
+    require "path/to/exceptional.php";
+    $exceptional = new Exceptional("YOUR-API-KEY");
 
- * `git clone git@github.com:till/exceptional-php.git`
- * `cd exceptional-php`
- * `pear install package.xml`
- 
-### Usage is really simple
+### Exceptions and errors!
 
- * either `require_once 'Services/Exceptional.php'`; or create an autoloader
- * code:
-    <?php
-    $exceptional = new Services_Exceptional('YOUR-API-KEY');
- * Done!
+Exceptional-PHP catches both errors and exceptions. You can control which errors are caught. If you want to ignore notices, use the following line:
+
+    error_reporting(E_ALL ^ E_NOTICE);
+
+It also supports custom error and exception handlers (see example_advanced.php)
