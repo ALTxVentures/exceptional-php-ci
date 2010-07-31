@@ -2,14 +2,14 @@
 
 // set custom error handler
 function my_error_handler($errno, $errstr, $errfile, $errline) {
-	echo "Error on line $errline\n";
+    echo "Error on line $errline\n";
 }
 set_error_handler("my_error_handler");
 
 
 // set custom exception handler
 function my_exception_handler($exception) {
-	echo "Exception thrown: ".$exception->getMessage()."\n";
+    echo "Exception thrown: ".$exception->getMessage()."\n";
 }
 set_exception_handler("my_exception_handler");
 
@@ -32,10 +32,10 @@ echo $hi;
 $math = 1 / 0;
 
 function backtrace($i) {
-	if ($i < 10) {
-		return backtrace($i + 1);
-	}
-	echo $hi;
+    if ($i < 10) {
+        return backtrace($i + 1);
+    }
+    echo $hi;
 }
 backtrace(0);
 

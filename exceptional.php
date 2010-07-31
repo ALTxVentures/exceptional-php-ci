@@ -42,11 +42,11 @@
 
 class Exceptional
 {
-	
+    
     public static $exceptions = array();
 
     public static $previous_exception_handler;
-	public static $previous_error_handler;
+    public static $previous_error_handler;
 
     public static $api_key;
     public static $host = "plugin.getexceptional.com";
@@ -57,7 +57,7 @@ class Exceptional
     public static $version = "2.0.19";
     public static $protocol_version = 5;
 
-	public static $debugging;
+    public static $debugging;
     
     /*
      * Installs Exceptional as the default exception handler
@@ -75,22 +75,22 @@ class Exceptional
             $this, "handle_error"));
     }
 
-	function handle_error($errno, $errstr, $errfile, $errline) {
-		if (!(error_reporting() & $errno)) {
-	        // This error code is not included in error_reporting
-	        return;
-	    }
-	    self::handle_exception(new ErrorException($errstr, 0, $errno, $errfile, $errline), false);
-		if (self::$previous_error_handler) {
+    function handle_error($errno, $errstr, $errfile, $errline) {
+        if (!(error_reporting() & $errno)) {
+            // This error code is not included in error_reporting
+            return;
+        }
+        self::handle_exception(new ErrorException($errstr, 0, $errno, $errfile, $errline), false);
+        if (self::$previous_error_handler) {
             call_user_func(self::$previous_error_handler, $errno, $errstr, $errfile, $errline);
         }
-	}
+    }
 
     /*
      * Exception handle class. Pushes the current exception onto the exception
      * stack and calls the previous handler, if it exists. Ensures seamless
      * integration.
-	 */
+     */
     public static function handle_exception($exception, $call_previous = true)
     {
         if (!class_exists("ExceptionalData")) {
@@ -108,14 +108,14 @@ class Exceptional
      * Destructor! Sends all collected exceptions to Exceptional
      */
     public function __destruct()
-    {	
+    {   
         if (!is_array(self::$exceptions)) {
             return;
         }
 
-		require dirname(__FILE__)."/exceptional/remote.php";
-		require dirname(__FILE__)."/exceptional/environment.php";
-		
+        require dirname(__FILE__)."/exceptional/remote.php";
+        require dirname(__FILE__)."/exceptional/environment.php";
+        
 
         // send stack of exceptions to getexceptional
         foreach (self::$exceptions as $exception) {
