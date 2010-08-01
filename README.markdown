@@ -9,7 +9,7 @@ PHP wrapper for the http://getexceptional.com API (for PHP 5.1.0+)
 
 ### Exceptions and errors!
 
-Exceptional-PHP catches both errors and exceptions. You can control which errors are caught. If you want to ignore certain errors, use one of the following lines:
+Exceptional-PHP catches both errors and exceptions. You can control which errors are caught. If you want to ignore certain errors, use `error_reporting()`. Here are some common settings:
 
     error_reporting(E_ALL & ~E_STRICT);             // ignore strict errors
     error_reporting(E_ALL & ~E_NOTICE);             // ignore notices
