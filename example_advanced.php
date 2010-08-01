@@ -32,10 +32,10 @@ echo $hi;
 $math = 1 / 0;
 
 function backtrace($i) {
-    if ($i < 10) {
+    if ($i < 6) {
         return backtrace($i + 1);
     }
-    echo $hi;
+    echo $cool;
 }
 backtrace(0);
 

@@ -80,7 +80,22 @@ class Exceptional
             // This error code is not included in error_reporting
             return;
         }
-        self::handle_exception(new ErrorException($errstr, 0, $errno, $errfile, $errline), false);
+        require_once dirname(__FILE__)."/exceptional/php_errors.php";
+        
+        switch ($errno) {
+            case E_NOTICE:
+                $ex = new PhpNotice($errstr, $errno, $errfile, $errline);
+                break;
+                
+            case E_WARNING:
+                $ex = new PhpWarning($errstr, $errno, $errfile, $errline);
+                break;
+                
+            default:
+                $ex = new PhpError($errstr, $errno, $errfile, $errline);
+        }
+        
+        self::handle_exception($ex, false);
         if (self::$previous_error_handler) {
             call_user_func(self::$previous_error_handler, $errno, $errstr, $errfile, $errline);
         }
@@ -93,9 +108,7 @@ class Exceptional
      */
     public static function handle_exception($exception, $call_previous = true)
     {
-        if (!class_exists("ExceptionalData")) {
-            require dirname(__FILE__)."/exceptional/data.php";
-        }
+        require_once dirname(__FILE__)."/exceptional/data.php";
         self::$exceptions[] = new ExceptionalData($exception);
 
         // If there's a previous exception handler, we call that as well

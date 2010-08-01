@@ -1,6 +1,6 @@
 # Exceptional-PHP
 
-PHP wrapper for the http://getexceptional.com API
+PHP wrapper for the http://getexceptional.com API (for PHP 5.1.0+)
 
 ### Super simple setup
 

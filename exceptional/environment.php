@@ -22,13 +22,13 @@ class ExceptionalEnvironment
                   "protocol_version" => Exceptional::$protocol_version
                 ),
                 "application_environment" => array(
-                  "environment" => "",
+                  "environment" => "development",
                   "env" => $env,
                   "host" => php_uname("n"),
                   "run_as_user" => self::get_username(),
                   "application_root_directory" => $_SERVER["PWD"],
                   "language" => "ruby",
-                  "language_version" => "1.8.7",
+                  "language_version" => "1.8.7 p299 2010-06-23 i686-darwin10",
                   "framework" => "",
                   "libraries_loaded" => array()
                 )
