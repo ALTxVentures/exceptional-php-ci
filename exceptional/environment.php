@@ -27,8 +27,8 @@ class ExceptionalEnvironment
                   "host" => php_uname("n"),
                   "run_as_user" => self::get_username(),
                   "application_root_directory" => $_SERVER["PWD"],
-                  "language" => "ruby",
-                  "language_version" => "1.8.7 p299 2010-06-23 i686-darwin10",
+                  "language" => "php",
+                  "language_version" => phpversion(),
                   "framework" => "",
                   "libraries_loaded" => array()
                 )
