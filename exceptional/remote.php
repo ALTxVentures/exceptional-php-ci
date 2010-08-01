@@ -19,9 +19,6 @@ class ExceptionalRemote
      */
     public static function call_remote($url, $post_data)
     {
-        //var_dump($url);
-        //return;
-        
         $s = fsockopen(Exceptional::$host, Exceptional::$port, $errno, $errstr);
         if (!$s || empty($post_data)) { 
             return false;

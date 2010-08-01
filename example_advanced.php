@@ -20,7 +20,7 @@ require dirname(__FILE__) . "/exceptional.php";
 
 $api_key = "YOUR-API-KEY";
 
-$exceptional = new Exceptional($api_key, true);
+$exceptional = new Exceptional($api_key);
 
 
 // control which errors are caught with error_reporting
