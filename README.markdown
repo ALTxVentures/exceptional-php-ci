@@ -13,4 +13,11 @@ Exceptional-PHP catches both errors and exceptions. You can control which errors
 
     error_reporting(E_ALL ^ E_NOTICE);
 
-It also supports custom error and exception handlers (see example_advanced.php)
+It also supports custom error and exception handlers - see example_advanced.php.
+It also catches parse errors and fatal errors, as long the setup file parses correctly.
+
+### 404 Support
+
+Add the following code to your 404 handler to track 404 errors:
+
+    throw new Http404Exception();

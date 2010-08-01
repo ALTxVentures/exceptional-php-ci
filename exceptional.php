@@ -73,6 +73,18 @@ class Exceptional
 
         self::$previous_error_handler = set_error_handler(array(
             $this, "handle_error"));
+            
+        register_shutdown_function(array(
+            $this, "shutdown"));
+    }
+    
+    function shutdown() {
+        if ($e = error_get_last()) {
+            $this->handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
+            if ($e["type"] == E_ERROR) {
+                $this->__destruct();
+            }
+        }
     }
 
     function handle_error($errno, $errstr, $errfile, $errline) {
@@ -80,17 +92,30 @@ class Exceptional
             // This error code is not included in error_reporting
             return;
         }
-        require_once dirname(__FILE__)."/exceptional/php_errors.php";
+        
+        if (!class_exists("PhpError")) {
+            require dirname(__FILE__)."/exceptional/php_errors.php";
+        }
         
         switch ($errno) {
             case E_NOTICE:
+            case E_USER_NOTICE:
                 $ex = new PhpNotice($errstr, $errno, $errfile, $errline);
                 break;
                 
             case E_WARNING:
+            case E_USER_WARNING:
                 $ex = new PhpWarning($errstr, $errno, $errfile, $errline);
                 break;
                 
+            case E_STRICT:
+                $ex = new PhpStrict($errstr, $errno, $errfile, $errline);
+                break;
+                
+            case E_PARSE:
+                $ex = new PhpParse($errstr, $errno, $errfile, $errline);
+                break;
+            
             default:
                 $ex = new PhpError($errstr, $errno, $errfile, $errline);
         }
@@ -108,7 +133,9 @@ class Exceptional
      */
     public static function handle_exception($exception, $call_previous = true)
     {
-        require_once dirname(__FILE__)."/exceptional/data.php";
+        if (!class_exists("ExceptionalData")) {
+            require dirname(__FILE__)."/exceptional/data.php";
+        }
         self::$exceptions[] = new ExceptionalData($exception);
 
         // If there's a previous exception handler, we call that as well
@@ -136,4 +163,16 @@ class Exceptional
         }
     }
 
+}
+
+class Http404Error extends Exception {  
+    
+    public function __construct() {
+        if (!isset($_SERVER["HTTP_HOST"])) {
+            echo "Run PHP on a server to use Http404Error.\n";
+            exit(0);
+        }
+        parent::__construct($_SERVER["REQUEST_URI"]." can't be found.");
+    }
+      
 }

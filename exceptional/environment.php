@@ -26,7 +26,7 @@ class ExceptionalEnvironment
                   "env" => $env,
                   "host" => php_uname("n"),
                   "run_as_user" => self::get_username(),
-                  "application_root_directory" => $_SERVER["PWD"],
+                  "application_root_directory" => self::get_root_dir(),
                   "language" => "php",
                   "language_version" => phpversion(),
                   "framework" => "",
@@ -46,6 +46,13 @@ class ExceptionalEnvironment
             }
         }
         return "UNKNOWN";
+    }
+    
+    public static function get_root_dir() {
+        if (isset($_SERVER["PWD"])) {
+            return $_SERVER["PWD"];
+        }
+        return @$_SERVER["DOCUMENT_ROOT"];
     }
     
 }
