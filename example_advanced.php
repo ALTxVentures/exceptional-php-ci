@@ -14,13 +14,17 @@ function my_exception_handler($exception) {
 set_exception_handler("my_exception_handler");
 
 
-// setup Exceptional with the following three lines
+// setup Exceptional with the following two lines
 // this code must come **after** you set custom error/exception handlers
 require dirname(__FILE__) . "/exceptional.php";
+Exceptional::setup("YOUR-API-KEY");
 
-$api_key = "YOUR-API-KEY";
 
-$exceptional = new Exceptional($api_key);
+// add context
+$context = array(
+    "user_id" => 1
+);
+Exceptional::context($context);
 
 
 // control which errors are caught with error_reporting

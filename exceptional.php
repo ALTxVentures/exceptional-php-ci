@@ -43,53 +43,66 @@
 class Exceptional
 {
     
-    public static $exceptions = array();
+    static $exceptions = array();
 
-    public static $previous_exception_handler;
-    public static $previous_error_handler;
+    static $previous_exception_handler;
+    static $previous_error_handler;
 
-    public static $api_key;
-    public static $host = "plugin.getexceptional.com";
-    public static $port = 80;
+    static $api_key;
+        
+    static $host = "plugin.getexceptional.com";
+    static $client_name = "exceptional-php";
+    static $version = "1.1";
+    static $protocol_version = 5;
+    
+    static $context = array();
 
-
-    public static $client_name = "getexceptional-gem";
-    public static $version = "2.0.19";
-    public static $protocol_version = 5;
-
-    public static $debugging;
+    static $debugging = false;
     
     /*
      * Installs Exceptional as the default exception handler
      */
-    public function __construct($api_key, $debugging = false)
-    {
+    static function setup($api_key)
+    {        
         self::$api_key = $api_key;
-        self::$debugging = $debugging;
 
         // set exception handler & keep old exception handler around
-        self::$previous_exception_handler = set_exception_handler(array(
-            $this, "handle_exception"));
+        self::$previous_exception_handler = set_exception_handler(
+            array("Exceptional", "handle_exception")
+        );
 
-        self::$previous_error_handler = set_error_handler(array(
-            $this, "handle_error"));
+        self::$previous_error_handler = set_error_handler(
+            array("Exceptional", "handle_error")
+        );
             
-        register_shutdown_function(array(
-            $this, "shutdown"));
+        register_shutdown_function(
+            array("Exceptional", "shutdown")
+        );
     }
     
-    function shutdown() {
+    static function shutdown()
+    {
         if ($e = error_get_last()) {
-            $this->handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
-            if ($e["type"] == E_ERROR) {
-                $this->__destruct();
-            }
+            self::handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
+        }
+        
+        if (!is_array(self::$exceptions)) {
+            return;
+        }
+
+        require dirname(__FILE__)."/exceptional/remote.php";
+        require dirname(__FILE__)."/exceptional/environment.php";
+
+        // send stack of exceptions to getexceptional
+        foreach (self::$exceptions as $exception) {
+            ExceptionalRemote::send_exception($exception);
         }
     }
 
-    function handle_error($errno, $errstr, $errfile, $errline) {
+    static function handle_error($errno, $errstr, $errfile, $errline)
+    {
         if (!(error_reporting() & $errno)) {
-            // This error code is not included in error_reporting
+            // this error code is not included in error_reporting
             return;
         }
         
@@ -131,43 +144,33 @@ class Exceptional
      * stack and calls the previous handler, if it exists. Ensures seamless
      * integration.
      */
-    public static function handle_exception($exception, $call_previous = true)
+    static function handle_exception($exception, $call_previous = true)
     {
         if (!class_exists("ExceptionalData")) {
             require dirname(__FILE__)."/exceptional/data.php";
         }
         self::$exceptions[] = new ExceptionalData($exception);
 
-        // If there's a previous exception handler, we call that as well
+        // if there's a previous exception handler, we call that as well
         if ($call_previous && self::$previous_exception_handler) {
             call_user_func(self::$previous_exception_handler, $exception);
         }
     }
-
-    /*
-     * Destructor! Sends all collected exceptions to Exceptional
-     */
-    public function __destruct()
-    {   
-        if (!is_array(self::$exceptions)) {
-            return;
-        }
-
-        require dirname(__FILE__)."/exceptional/remote.php";
-        require dirname(__FILE__)."/exceptional/environment.php";
-        
-
-        // send stack of exceptions to getexceptional
-        foreach (self::$exceptions as $exception) {
-            ExceptionalRemote::send_exception($exception);
-        }
+    
+    static function context($data = array()) {
+        self::$context = array_merge(self::$context, $data);
+    }
+    
+    static function clear() {
+        self::$context = array();
     }
 
 }
 
 class Http404Error extends Exception {  
     
-    public function __construct() {
+    public function __construct()
+    {
         if (!isset($_SERVER["HTTP_HOST"])) {
             echo "Run PHP on a server to use Http404Error.\n";
             exit(0);

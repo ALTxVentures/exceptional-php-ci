@@ -5,7 +5,7 @@ class ExceptionalRemote
     /*
      * Does the actual sending of an exception
      */
-    public static function send_exception($exception)
+    static function send_exception($exception)
     {
         $uniqueness_hash = $exception->uniqueness_hash();
         $hash_param = ($uniqueness_hash) ? null : "&hash={$uniqueness_hash}";
@@ -17,35 +17,33 @@ class ExceptionalRemote
     /*
      * Sends a POST request
      */
-    public static function call_remote($url, $post_data)
-    {
-        $s = fsockopen(Exceptional::$host, Exceptional::$port, $errno, $errstr);
-        if (!$s || empty($post_data)) { 
+    static function call_remote($url, $post_data)
+    {        
+        $s = fsockopen(Exceptional::$host, 80, $errno, $errstr, 4);
+        if (!$s) {
             return false;
         }
 
-        $host = Exceptional::$host;
-
-        $request  = "POST $url HTTP/1.1\r\nHost: {$host}\r\n";
+        $request  = "POST $url HTTP/1.1\r\n";
+        $request .= "Host: ".Exceptional::$host."\r\n";
         $request .= "Accept: */*\r\n";
-        $request .= "User-Agent: Exceptional @package_version@\r\n";
+        $request .= "User-Agent: ".Exceptional::$client_name." ".Exceptional::$version."\r\n";
         $request .= "Content-Type: text/json\r\n";
         $request .= "Connection: close\r\n";
         $request .= "Content-Length: ".strlen($post_data)."\r\n\r\n";
         $request .= "$post_data\r\n";
 
         fwrite($s, $request);
-
-        if (Exceptional::$debugging === false) {
-            return;
-        }
         
-        // for debugging
-        $response = "\nDebugging...\n";
+        // must wait for a response
+        $response = "";
         while (!feof($s)) {
             $response .= fgets($s);
         }
-        echo $response;
+        
+        if (Exceptional::$debugging !== false) {
+            echo $response;
+        }
     }
 
 }

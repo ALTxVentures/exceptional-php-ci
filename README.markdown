@@ -5,7 +5,7 @@ PHP wrapper for the http://getexceptional.com API (for PHP 5.1.0+)
 ### Super simple setup
 
     require "path/to/exceptional.php";
-    $exceptional = new Exceptional("YOUR-API-KEY");
+    Exceptional::setup("YOUR-API-KEY");
 
 ### Exceptions and errors!
 
@@ -24,3 +24,10 @@ Fatal and parse errors are caught, too - as long the setup file parses correctly
 Add the following code to your 404 handler to track 404 errors:
 
     throw new Http404Exception();
+    
+### Send extra data
+
+    $context = array(
+        "user_id" => 1
+    );
+    Exceptional::context($context);

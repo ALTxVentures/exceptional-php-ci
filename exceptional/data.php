@@ -6,7 +6,7 @@ class ExceptionalData
     protected $exception;
     protected $backtrace = array();
     
-    public function __construct(Exception $exception)
+    function __construct(Exception $exception)
     {
         //echo "[Exceptional] ".$exception->getMessage()."\n";
         $this->exception = $exception;
@@ -18,19 +18,19 @@ class ExceptionalData
         }
     }
 
-    public function uniqueness_hash()
+    function uniqueness_hash()
     {
         return md5(implode("", $this->backtrace));
     }
 
-    public function to_json()
+    function to_json()
     {        
         $data = ExceptionalEnvironment::to_array();
         
         $error_class = get_class($this->exception);
         if ($error_class == "Http404Error") {
             $error_class = "ActionController::UnknownAction";
-            $protocol = (!empty($_SERVER["HTTPS"])) ? "https://" : "http://";
+            $protocol = (!empty($_SERVER["HTTPS"]) && @$_SERVER["HTTPS"] != "off") ? "https://" : "http://";
             $data["request"] = array(
                 "url" => "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
                 "controller" => "none",
@@ -46,6 +46,11 @@ class ExceptionalData
             $data["rescue_block"] = array(
                 "name" => ""
             );
+        }
+        
+        $context = Exceptional::$context;
+        if (!empty($context)) {
+            $data["context"] = $context;
         }
         
         $message = $this->exception->getMessage();

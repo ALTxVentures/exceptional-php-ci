@@ -1,11 +1,8 @@
 <?php
 
-// setup Exceptional with the following three lines
+// setup Exceptional with the following two lines
 require dirname(__FILE__) . "/exceptional.php";
-
-$api_key = "YOUR-API-KEY";
-
-$exceptional = new Exceptional($api_key);
+Exceptional::setup("YOUR-API-KEY");
 
 
 // control which errors are caught with error_reporting
