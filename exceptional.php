@@ -49,10 +49,12 @@ class Exceptional
     static $previous_error_handler;
 
     static $api_key;
+    static $send_errors;
+    static $use_ssl;
         
     static $host = "plugin.getexceptional.com";
     static $client_name = "exceptional-php";
-    static $version = "1.1";
+    static $version = "1.2";
     static $protocol_version = 5;
     
     static $context = array();
@@ -62,9 +64,11 @@ class Exceptional
     /*
      * Installs Exceptional as the default exception handler
      */
-    static function setup($api_key)
+    static function setup($api_key, $send_errors = true, $use_ssl = false)
     {        
         self::$api_key = $api_key;
+        self::$send_errors = $send_errors;
+        self::$use_ssl = $use_ssl;
 
         // set exception handler & keep old exception handler around
         self::$previous_exception_handler = set_exception_handler(

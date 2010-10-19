@@ -14,6 +14,12 @@ class ExceptionalEnvironment
                 if (!isset($env[$var])) continue;
                 unset($env[$var]);
             }
+            
+            foreach ($env as $k => $v) {
+                if (substr($k, 0, 5) == "HTTP_") {
+                  unset($env[$k]);
+                }
+            }
         
             self::$environment =  array(
                 "client" => array(
@@ -22,14 +28,14 @@ class ExceptionalEnvironment
                   "protocol_version" => Exceptional::$protocol_version
                 ),
                 "application_environment" => array(
-                  "environment" => "development",
+                  "environment" => "production",
                   "env" => $env,
                   "host" => php_uname("n"),
                   "run_as_user" => self::get_username(),
                   "application_root_directory" => self::get_root_dir(),
                   "language" => "php",
                   "language_version" => phpversion(),
-                  "framework" => "",
+                  "framework" => null,
                   "libraries_loaded" => array()
                 )
             );

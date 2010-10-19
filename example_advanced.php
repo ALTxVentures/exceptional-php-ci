@@ -17,7 +17,7 @@ set_exception_handler("my_exception_handler");
 // setup Exceptional with the following two lines
 // this code must come **after** you set custom error/exception handlers
 require dirname(__FILE__) . "/exceptional.php";
-Exceptional::setup("YOUR-API-KEY");
+Exceptional::setup("YOUR-API-KEY", true, true); // use ssl
 
 
 // add context
@@ -53,6 +53,7 @@ class Foo
 
 $f = new Foo;
 $f->bar();
+
 
 // execution halts after exception_handler is called (PHP behavior)
 // so code below never gets called

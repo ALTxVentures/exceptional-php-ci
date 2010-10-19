@@ -6,6 +6,17 @@ PHP wrapper for the http://getexceptional.com API (for PHP 5.1.0+)
 
     require "path/to/exceptional.php";
     Exceptional::setup("YOUR-API-KEY");
+    
+You can also pass additional configuration options.
+
+    // turn errors off in development
+    define("PHP_ENV", ...);                         // code to determine environment
+    $send_errors = (PHP_ENV == "production");       // defaults to true
+
+    // turn ssl on (requires openssl)
+    $use_ssl = true;                                // defaults to false
+
+    Exceptional::setup("YOUR-API-KEY", $send_errors, $use_ssl);
 
 ### Exceptions and errors!
 
@@ -23,7 +34,7 @@ Fatal and parse errors are caught, too - as long the setup file parses correctly
 
 Add the following code to your 404 handler to track 404 errors:
 
-    throw new Http404Exception();
+    throw new Http404Error();
     
 ### Send extra data
 
