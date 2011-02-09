@@ -10,10 +10,10 @@ You can have the power of [Exceptional](http://getexceptional.com) in PHP.
 You can turn off exception notifications by passing an empty string for the API key.  This is great for development.
 
     if (PHP_ENV == "production") {
-      $api_key = "YOUR-API-KEY"
+      $api_key = "YOUR-API-KEY";
     }
     else {
-      $api_key = ""
+      $api_key = "";
     }
 
     Exceptional::setup($api_key);
