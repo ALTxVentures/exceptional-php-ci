@@ -19,22 +19,22 @@ class ExceptionalRemote
      */
     static function call_remote($url, $post_data)
     {
-        if (Exceptional::$send_errors !== true) {
+        if (Exceptional::$api_key == null) {
             return false;
         }
-        
+
         if (Exceptional::$use_ssl === true) {
             $s = fsockopen("ssl://".Exceptional::$host, 443, $errno, $errstr, 4);
         }
         else {
             $s = fsockopen(Exceptional::$host, 80, $errno, $errstr, 2);
         }
-        
+
         if (!$s) {
             echo "[Error $errno] $errstr\n";
             return false;
         }
-        
+
         $request  = "POST $url HTTP/1.1\r\n";
         $request .= "Host: ".Exceptional::$host."\r\n";
         $request .= "Accept: */*\r\n";
@@ -45,16 +45,16 @@ class ExceptionalRemote
         $request .= "$post_data\r\n";
 
         fwrite($s, $request);
-    
-        // don't wait for the response unless debugging
+
+        $response = "";
+        while (!feof($s)) {
+            $response .= fgets($s);
+        }
+
         if (Exceptional::$debugging !== false) {
-            $response = "";
-            while (!feof($s)) {
-                $response .= fgets($s);
-            }
             echo $response;
         }
-    
+
         fclose($s);
     }
 
