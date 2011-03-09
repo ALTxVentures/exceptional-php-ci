@@ -96,8 +96,8 @@ class Exceptional
             return;
         }
 
-        require dirname(__FILE__)."/exceptional/remote.php";
-        require dirname(__FILE__)."/exceptional/environment.php";
+        require_once dirname(__FILE__)."/exceptional/remote.php";
+        require_once dirname(__FILE__)."/exceptional/environment.php";
 
         // send stack of exceptions to getexceptional
         foreach (self::$exceptions as $exception) {
@@ -113,7 +113,7 @@ class Exceptional
         }
 
         if (!class_exists("PhpError")) {
-            require dirname(__FILE__)."/exceptional/php_errors.php";
+            require_once dirname(__FILE__)."/exceptional/php_errors.php";
         }
 
         switch ($errno) {
@@ -153,7 +153,7 @@ class Exceptional
     static function handle_exception($exception, $call_previous = true)
     {
         if (!class_exists("ExceptionalData")) {
-            require dirname(__FILE__)."/exceptional/data.php";
+            require_once dirname(__FILE__)."/exceptional/data.php";
         }
         self::$exceptions[] = new ExceptionalData($exception);
 
