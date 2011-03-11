@@ -112,9 +112,7 @@ class Exceptional
             return;
         }
 
-        if (!class_exists("PhpError")) {
-            require_once dirname(__FILE__)."/exceptional/php_errors.php";
-        }
+        require_once dirname(__FILE__)."/exceptional/php_errors.php";
 
         switch ($errno) {
             case E_NOTICE:
@@ -152,9 +150,7 @@ class Exceptional
      */
     static function handle_exception($exception, $call_previous = true)
     {
-        if (!class_exists("ExceptionalData")) {
-            require_once dirname(__FILE__)."/exceptional/data.php";
-        }
+        require_once dirname(__FILE__)."/exceptional/data.php";
         self::$exceptions[] = new ExceptionalData($exception);
 
         // if there's a previous exception handler, we call that as well
