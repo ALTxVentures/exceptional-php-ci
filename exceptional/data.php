@@ -71,8 +71,8 @@ class ExceptionalData
         $protocol = (!empty($_SERVER["HTTPS"]) && @$_SERVER["HTTPS"] != "off") ? "https://" : "http://";
         $data["request"] = array(
             "url" => "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]",
-            "controller" => "",
-            "action" => "",
+            "controller" => Exceptional::$controller,
+            "action" => Exceptional::$action,
             "parameters" => $params,
             "request_method" => strtolower($_SERVER["REQUEST_METHOD"]),
             "remote_ip" => $_SERVER["REMOTE_ADDR"],

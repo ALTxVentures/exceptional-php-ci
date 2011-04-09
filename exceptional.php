@@ -56,6 +56,9 @@ class Exceptional
     static $version = "1.2";
     static $protocol_version = 5;
 
+    static $controller = "";
+    static $action = "";
+
     static $context = array();
 
     static $debugging = false;

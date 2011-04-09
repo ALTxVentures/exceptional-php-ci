@@ -20,6 +20,11 @@ require dirname(__FILE__) . "/../exceptional.php";
 Exceptional::setup("YOUR-API-KEY", true); // use ssl
 
 
+// add controller and action
+Exceptional::$controller = "welcome";
+Exceptional::$action = "index";
+
+
 // add context
 $context = array(
     "user_id" => 1
