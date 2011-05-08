@@ -60,7 +60,7 @@ class ExceptionalData
         }
 
         // must set these
-        $params = $_REQUEST;
+        $params = array_merge($_GET, $_POST);
         $keys = array("controller", "action");
         $this->fill_keys($params, $keys);
 
