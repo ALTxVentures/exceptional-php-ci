@@ -32,7 +32,6 @@ class PhpParse extends PhpException {
 }
 
 class PhpNotice extends PhpException {
-
     /*
      * Must change the error message for undefined variables
      * Otherwise, Exceptional groups all errors together (regardless of variable name)

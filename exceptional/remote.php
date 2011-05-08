@@ -1,12 +1,10 @@
 <?php
 
-class ExceptionalRemote
-{
+class ExceptionalRemote {
     /*
      * Does the actual sending of an exception
      */
-    static function send_exception($exception)
-    {
+    static function send_exception($exception) {
         $uniqueness_hash = $exception->uniqueness_hash();
         $hash_param = ($uniqueness_hash) ? null : "&hash={$uniqueness_hash}";
         $url = "/api/errors?api_key=".Exceptional::$api_key."&protocol_version=".Exceptional::$protocol_version.$hash_param;
@@ -17,8 +15,7 @@ class ExceptionalRemote
     /*
      * Sends a POST request
      */
-    static function call_remote($url, $post_data)
-    {
+    static function call_remote($url, $post_data) {
         if (Exceptional::$use_ssl === true) {
             $s = fsockopen("ssl://".Exceptional::$host, 443, $errno, $errstr, 4);
         }

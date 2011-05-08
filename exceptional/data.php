@@ -1,13 +1,11 @@
 <?php
 
-class ExceptionalData
-{
+class ExceptionalData {
 
     protected $exception;
     protected $backtrace = array();
 
-    function __construct(Exception $exception)
-    {
+    function __construct(Exception $exception) {
         $this->exception = $exception;
 
         $trace = $this->exception->getTrace();
@@ -73,13 +71,11 @@ class ExceptionalData
         $this->data = $data;
     }
 
-    function uniqueness_hash()
-    {
+    function uniqueness_hash() {
         return md5(implode("", $this->backtrace));
     }
 
-    function to_json()
-    {
+    function to_json() {
         return json_encode($this->data);
     }
 
@@ -94,10 +90,8 @@ class ExceptionalData
 }
 
 // http://php.net/manual/en/function.getallheaders.php
-if (!function_exists("getallheaders"))
-{
-    function getallheaders()
-    {
+if (!function_exists("getallheaders")) {
+    function getallheaders() {
         $headers = array();
         foreach ($_SERVER as $name => $value) {
            if (substr($name, 0, 5) == "HTTP_") {

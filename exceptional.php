@@ -11,8 +11,7 @@ require_once dirname(__FILE__)."/exceptional/environment.php";
 require_once dirname(__FILE__)."/exceptional/errors.php";
 require_once dirname(__FILE__)."/exceptional/remote.php";
 
-class Exceptional
-{
+class Exceptional {
 
     static $exceptions;
 
@@ -36,8 +35,7 @@ class Exceptional
     /*
      * Installs Exceptional as the default exception handler
      */
-    static function setup($api_key, $use_ssl = false)
-    {
+    static function setup($api_key, $use_ssl = false) {
         if ($api_key == "") {
           $api_key = null;
         }
@@ -64,8 +62,7 @@ class Exceptional
         );
     }
 
-    static function shutdown()
-    {
+    static function shutdown() {
         if ($e = error_get_last()) {
             self::handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
         }
@@ -81,8 +78,7 @@ class Exceptional
         }
     }
 
-    static function handle_error($errno, $errstr, $errfile, $errline)
-    {
+    static function handle_error($errno, $errstr, $errfile, $errline) {
         if (!(error_reporting() & $errno)) {
             // this error code is not included in error_reporting
             return;
@@ -122,8 +118,7 @@ class Exceptional
      * stack and calls the previous handler, if it exists. Ensures seamless
      * integration.
      */
-    static function handle_exception($exception, $call_previous = true)
-    {
+    static function handle_exception($exception, $call_previous = true) {
         self::$exceptions[] = $exception;
 
         // if there's a previous exception handler, we call that as well
@@ -144,8 +139,7 @@ class Exceptional
 
 class Http404Error extends Exception {
 
-    public function __construct()
-    {
+    public function __construct() {
         if (!isset($_SERVER["HTTP_HOST"])) {
             echo "Run PHP on a server to use Http404Error.\n";
             exit(0);

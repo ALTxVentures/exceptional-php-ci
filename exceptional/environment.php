@@ -1,12 +1,10 @@
 <?php
 
-class ExceptionalEnvironment
-{
+class ExceptionalEnvironment {
 
     private static $environment;
 
-    static function to_array()
-    {
+    static function to_array() {
         if (!self::$environment) {
             $env = $_SERVER;
 
