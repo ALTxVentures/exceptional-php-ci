@@ -51,9 +51,6 @@ class ExceptionalData {
               $headers["Cookie"] = preg_replace("/PHPSESSID=\S+/", "PHPSESSID=[FILTERED]", $headers["Cookie"]);
             }
 
-            // must set these
-            $params = array_merge($_GET, $_POST);
-
             $server = $_SERVER;
             $keys = array("HTTPS", "HTTP_HOST", "REQUEST_URI", "REQUEST_METHOD", "REMOTE_ADDR");
             $this->fill_keys($server, $keys);
@@ -63,15 +60,21 @@ class ExceptionalData {
 
             $data["request"] = array(
                 "url" => $url,
-                "controller" => Exceptional::$controller,
-                "action" => Exceptional::$action,
-                "parameters" => $params,
                 "request_method" => strtolower($server["REQUEST_METHOD"]),
                 "remote_ip" => $server["REMOTE_ADDR"],
                 "headers" => $headers,
                 "session" => $session
             );
 
+            if (!empty(Exceptional::$controller) && !empty(Exceptional::$action)) {
+                $data["request"]["controller"] = Exceptional::$controller;
+                $data["request"]["action"] = Exceptional::$action;
+            }
+
+            $params = array_merge($_GET, $_POST);
+            if (!empty($params)) {
+                $data["request"]["parameters"] = $params;
+            }
         }
 
         $this->data = $data;
