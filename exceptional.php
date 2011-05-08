@@ -23,7 +23,7 @@ class Exceptional {
 
     static $host = "plugin.getexceptional.com";
     static $client_name = "exceptional-php";
-    static $version = "1.4";
+    static $version = "1.5";
     static $protocol_version = 6;
 
     static $controller;
