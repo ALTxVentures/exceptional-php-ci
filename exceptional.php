@@ -1,44 +1,15 @@
 <?php
-/**
- * An interface to getexceptional.com's API.
+
+/*
+ * Require files
  *
- * PHP version 5.1.0+
- *
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *  - Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *  - Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *  - Neither the name of the The PEAR Group nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * PHP implementation of Exceptional
- *
- * Original authors
- * Jan Lehnardt <jan@php.net>
- * Till Klampaeckel <till@php.net>
- *
- * Licensed under The BSD License
- * http://www.opensource.org/licenses/bsd-license.php
+ * Not DRY, but better than poluting the global namespace with a variable
  */
+
+require_once dirname(__FILE__)."/exceptional/data.php";
+require_once dirname(__FILE__)."/exceptional/environment.php";
+require_once dirname(__FILE__)."/exceptional/errors.php";
+require_once dirname(__FILE__)."/exceptional/remote.php";
 
 class Exceptional
 {
@@ -99,12 +70,10 @@ class Exceptional
             return;
         }
 
-        require_once dirname(__FILE__)."/exceptional/remote.php";
-        require_once dirname(__FILE__)."/exceptional/environment.php";
-
         // send stack of exceptions to getexceptional
         foreach (self::$exceptions as $exception) {
-            ExceptionalRemote::send_exception($exception);
+          $data = new ExceptionalData($exception);
+          ExceptionalRemote::send_exception($data);
         }
     }
 
@@ -114,8 +83,6 @@ class Exceptional
             // this error code is not included in error_reporting
             return;
         }
-
-        require_once dirname(__FILE__)."/exceptional/php_errors.php";
 
         switch ($errno) {
             case E_NOTICE:
@@ -153,8 +120,7 @@ class Exceptional
      */
     static function handle_exception($exception, $call_previous = true)
     {
-        require_once dirname(__FILE__)."/exceptional/data.php";
-        self::$exceptions[] = new ExceptionalData($exception);
+        self::$exceptions[] = $exception;
 
         // if there's a previous exception handler, we call that as well
         if ($call_previous && self::$previous_exception_handler) {
