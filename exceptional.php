@@ -66,7 +66,7 @@ class Exceptional
             self::handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
         }
 
-        if (!is_array(self::$exceptions)) {
+        if (Exceptional::$api_key == null || empty(self::$exceptions)) {
             return;
         }
 

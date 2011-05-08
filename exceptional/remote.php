@@ -19,10 +19,6 @@ class ExceptionalRemote
      */
     static function call_remote($url, $post_data)
     {
-        if (Exceptional::$api_key == null) {
-            return false;
-        }
-
         if (Exceptional::$use_ssl === true) {
             $s = fsockopen("ssl://".Exceptional::$host, 443, $errno, $errstr, 4);
         }
