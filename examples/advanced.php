@@ -33,7 +33,7 @@ Exceptional::context($context);
 
 
 // control which errors are caught with error_reporting
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 
 
 // start testing
@@ -47,6 +47,9 @@ function backtrace($i) {
     echo $cool;
 }
 backtrace(0);
+
+function change(&$var) {}
+change($var = 5);
 
 class Foo
 {
