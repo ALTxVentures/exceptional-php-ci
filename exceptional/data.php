@@ -15,15 +15,7 @@ class ExceptionalData
             if (!isset($t["file"])) continue;
             $this->backtrace[] = "$t[file]:$t[line]:in `$t[function]\'";
         }
-    }
 
-    function uniqueness_hash()
-    {
-        return md5(implode("", $this->backtrace));
-    }
-
-    function to_json()
-    {
         // environment data
         $data = ExceptionalEnvironment::to_array();
 
@@ -61,8 +53,6 @@ class ExceptionalData
 
         // must set these
         $params = array_merge($_GET, $_POST);
-        $keys = array("controller", "action");
-        $this->fill_keys($params, $keys);
 
         $server = $_SERVER;
         $keys = array("HTTPS", "HTTP_HOST", "REQUEST_URI", "REQUEST_METHOD", "REMOTE_ADDR");
@@ -80,7 +70,17 @@ class ExceptionalData
             "session" => $session
         );
 
-        return json_encode($data);
+        $this->data = $data;
+    }
+
+    function uniqueness_hash()
+    {
+        return md5(implode("", $this->backtrace));
+    }
+
+    function to_json()
+    {
+        return json_encode($this->data);
     }
 
     function fill_keys(&$arr, $keys) {

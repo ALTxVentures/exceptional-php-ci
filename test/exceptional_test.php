@@ -34,4 +34,19 @@ class ExceptionalTest extends PHPUnit_Framework_TestCase
       $this->assertEquals(get_class($e), "PhpNotice");
       $this->assertEquals($e->getMessage(), "\$big is undefined");
     }
+
+    function testParameters()
+    {
+        $_GET["a"] = "GET works";
+        $_POST["b"] = "POST works";
+
+        $notice = new PhpNotice("Test", 0, "", 0);
+        $data = new ExceptionalData($notice);
+
+        $params = $data->data["request"]["parameters"];
+
+        $this->assertEquals($params["a"], "GET works");
+        $this->assertEquals($params["b"], "POST works");
+    }
+
 }
