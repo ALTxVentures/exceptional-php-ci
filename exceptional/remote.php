@@ -44,10 +44,6 @@ class ExceptionalRemote {
             $response .= fgets($s);
         }
 
-        if (Exceptional::$debugging !== false) {
-            echo $response;
-        }
-
         fclose($s);
     }
 

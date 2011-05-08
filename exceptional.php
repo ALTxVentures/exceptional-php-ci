@@ -30,8 +30,6 @@ class Exceptional {
     static $action;
     static $context;
 
-    static $debugging = false;
-
     /*
      * Installs Exceptional as the default exception handler
      */
