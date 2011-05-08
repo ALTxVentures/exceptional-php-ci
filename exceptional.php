@@ -14,7 +14,7 @@ require_once dirname(__FILE__)."/exceptional/remote.php";
 class Exceptional
 {
 
-    static $exceptions = array();
+    static $exceptions;
 
     static $previous_exception_handler;
     static $previous_error_handler;
@@ -27,10 +27,9 @@ class Exceptional
     static $version = "1.4";
     static $protocol_version = 5;
 
-    static $controller = "";
-    static $action = "";
-
-    static $context = array();
+    static $controller;
+    static $action;
+    static $context;
 
     static $debugging = false;
 
@@ -45,6 +44,11 @@ class Exceptional
 
         self::$api_key = $api_key;
         self::$use_ssl = $use_ssl;
+
+        self::$exceptions = array();
+        self::$context = array();
+        self::$action = "";
+        self::$controller = "";
 
         // set exception handler & keep old exception handler around
         self::$previous_exception_handler = set_exception_handler(
