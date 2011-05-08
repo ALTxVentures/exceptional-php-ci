@@ -18,6 +18,7 @@ class ExceptionalTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         Exceptional::setup("");
+        $_SERVER["HTTP_HOST"] = "localhost";
     }
 
     function testParameters()
