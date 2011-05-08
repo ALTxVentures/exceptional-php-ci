@@ -19,7 +19,7 @@ class ExceptionalData {
 
         // exception data
         $message = $this->exception->getMessage();
-        $now = date("D M j H:i:s O Y");
+        $now = date("c");
 
         // spoof 404 error
         $error_class = get_class($this->exception);
@@ -40,33 +40,39 @@ class ExceptionalData {
             $data["context"] = $context;
         }
 
-        // request data
-        $session = isset($_SESSION) ? $_SESSION : array("session_id" => "", "data" => array());
+        if (isset($_SERVER["HTTP_HOST"])) {
 
-        // sanitize headers
-        $headers = getallheaders();
-        if (isset($headers["Cookie"])) {
-          $headers["Cookie"] = preg_replace("/PHPSESSID=\S+/", "PHPSESSID=[FILTERED]", $headers["Cookie"]);
+            // request data
+            $session = isset($_SESSION) ? $_SESSION : array();
+
+            // sanitize headers
+            $headers = getallheaders();
+            if (isset($headers["Cookie"])) {
+              $headers["Cookie"] = preg_replace("/PHPSESSID=\S+/", "PHPSESSID=[FILTERED]", $headers["Cookie"]);
+            }
+
+            // must set these
+            $params = array_merge($_GET, $_POST);
+
+            $server = $_SERVER;
+            $keys = array("HTTPS", "HTTP_HOST", "REQUEST_URI", "REQUEST_METHOD", "REMOTE_ADDR");
+            $this->fill_keys($server, $keys);
+
+            $protocol = $server["HTTPS"] && $server["HTTPS"] != "off" ? "https://" : "http://";
+            $url = $server["HTTP_HOST"] ? "$protocol$server[HTTP_HOST]$server[REQUEST_URI]" : "";
+
+            $data["request"] = array(
+                "url" => $url,
+                "controller" => Exceptional::$controller,
+                "action" => Exceptional::$action,
+                "parameters" => $params,
+                "request_method" => strtolower($server["REQUEST_METHOD"]),
+                "remote_ip" => $server["REMOTE_ADDR"],
+                "headers" => $headers,
+                "session" => $session
+            );
+
         }
-
-        // must set these
-        $params = array_merge($_GET, $_POST);
-
-        $server = $_SERVER;
-        $keys = array("HTTPS", "HTTP_HOST", "REQUEST_URI", "REQUEST_METHOD", "REMOTE_ADDR");
-        $this->fill_keys($server, $keys);
-
-        $protocol = $server["HTTPS"] && $server["HTTPS"] != "off" ? "https://" : "http://";
-        $data["request"] = array(
-            "url" => "$protocol$server[HTTP_HOST]$server[REQUEST_URI]",
-            "controller" => Exceptional::$controller,
-            "action" => Exceptional::$action,
-            "parameters" => $params,
-            "request_method" => strtolower($server["REQUEST_METHOD"]),
-            "remote_ip" => $server["REMOTE_ADDR"],
-            "headers" => $headers,
-            "session" => $session
-        );
 
         $this->data = $data;
     }
