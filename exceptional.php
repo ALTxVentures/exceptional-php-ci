@@ -64,16 +64,6 @@ class Exceptional {
         if ($e = error_get_last()) {
             self::handle_error($e["type"], $e["message"], $e["file"], $e["line"]);
         }
-
-        if (Exceptional::$api_key == null || empty(self::$exceptions)) {
-            return;
-        }
-
-        // send stack of exceptions to getexceptional
-        foreach (self::$exceptions as $exception) {
-          $data = new ExceptionalData($exception);
-          ExceptionalRemote::send_exception($data);
-        }
     }
 
     static function handle_error($errno, $errstr, $errfile, $errline) {
@@ -106,6 +96,7 @@ class Exceptional {
         }
 
         self::handle_exception($ex, false);
+
         if (self::$previous_error_handler) {
             call_user_func(self::$previous_error_handler, $errno, $errstr, $errfile, $errline);
         }
@@ -118,6 +109,11 @@ class Exceptional {
      */
     static function handle_exception($exception, $call_previous = true) {
         self::$exceptions[] = $exception;
+
+        if (Exceptional::$api_key != null) {
+            $data = new ExceptionalData($exception);
+            ExceptionalRemote::send_exception($data);
+        }
 
         // if there's a previous exception handler, we call that as well
         if ($call_previous && self::$previous_exception_handler) {
