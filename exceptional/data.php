@@ -48,7 +48,7 @@ class ExceptionalData {
             // sanitize headers
             $headers = getallheaders();
             if (isset($headers["Cookie"])) {
-              $sessionKey = preg_quote(function_exists("ini_get") ? ini_get("session.name") : "PHPSESSID", "/");
+              $sessionKey = preg_quote(ini_get("session.name"), "/");
               $headers["Cookie"] = preg_replace("/$sessionKey=\S+/", "$sessionKey=[FILTERED]", $headers["Cookie"]);
             }
 
