@@ -28,6 +28,15 @@ You can turn on SSL by setting the second parameter to `true`.
 Exceptional::setup($api_key, true);
 ```
 
+## Filtering sensitive data
+
+You can blacklist sensitive fields from being submitted to Exceptional:
+
+```
+Exceptional::setup($api_key);
+Exceptional::blacklist(array('password', 'creditcardnumber'));
+```
+
 ## Exceptions and errors
 
 Exceptional PHP catches both errors and exceptions. You can control which errors are caught. If you want to ignore certain errors, use `error_reporting()`. Here's a common setting:

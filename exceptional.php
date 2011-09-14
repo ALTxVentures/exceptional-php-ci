@@ -30,6 +30,8 @@ class Exceptional {
     static $action;
     static $context;
 
+		static $blacklist = array();
+
     /*
      * Installs Exceptional as the default exception handler
      */
@@ -59,6 +61,10 @@ class Exceptional {
             array("Exceptional", "shutdown")
         );
     }
+
+		static function blacklist($filters = array()) {
+			self::$blacklist = array_merge(self::$blacklist, $filters);
+		}
 
     static function shutdown() {
         if ($e = error_get_last()) {

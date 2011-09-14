@@ -73,6 +73,12 @@ class ExceptionalData {
             }
 
             $params = array_merge($_GET, $_POST);
+
+						foreach (Exceptional::$blacklist as $filter)
+						{
+							$params[$filter] = '';
+						}
+						
             if (!empty($params)) {
                 $data["request"]["parameters"] = $params;
             }
