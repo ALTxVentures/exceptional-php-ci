@@ -76,7 +76,7 @@ class ExceptionalData {
 
 						foreach (Exceptional::$blacklist as $filter) {
 							if (isset($params[$filter])) {
-								$params[$filter] = '';
+								$params[$filter] = '[FILTERED]';
 							}
 						}
 						
