@@ -75,9 +75,7 @@ class ExceptionalData {
             $params = array_merge($_GET, $_POST);
 
 						foreach (Exceptional::$blacklist as $filter) {
-							if (isset($params[$filter])) {
-								$params[$filter] = '[FILTERED]';
-							}
+							$params = $this->filter_params($params, $filter);
 						}
 						
             if (!empty($params)) {
@@ -103,6 +101,19 @@ class ExceptionalData {
             }
         }
     }
+
+		function filter_params($params, $term) {
+			foreach ($params as $key => $value) {
+				if(preg_match("/$term/i", $key)) {
+					$params[$key] = '[FILTERED]';
+				}
+
+				if(is_array($value)) {
+					$params[$key] = $this->filter_params($value, $term);
+				}
+			}
+			return $params;
+		}
 
 }
 
