@@ -37,6 +37,19 @@ class ExceptionalTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($this->request["parameters"]["b"], "POST works");
     }
 
+    function testBlacklist() {
+        $_POST["password"] = "test123";
+        $_POST["user"]["creditcardnumber"] = 1234;
+        $_POST["zipcode"] = 55555;
+
+        Exceptional::blacklist(array('password', 'creditcardnumber'));
+        $this->createExceptionData();
+
+        $this->assertEquals($this->request["parameters"]["password"], "[FILTERED]");
+        $this->assertEquals($this->request["parameters"]["user"]["creditcardnumber"], "[FILTERED]");
+        $this->assertEquals($this->request["parameters"]["zipcode"], 55555);
+    }
+
     function testControllerAndAction()
     {
         Exceptional::$controller = "home";
