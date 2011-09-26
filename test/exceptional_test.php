@@ -49,8 +49,10 @@ class ExceptionalTest extends PHPUnit_Framework_TestCase
     }
 
     function testSessionFilter() {
-        $session_name = ini_get("session.name");
-        $session_id = rand();
+        $session_name = md5(rand());
+        $session_id = md5(rand());
+
+        ini_set("session.name", $session_name);
         $_SERVER["HTTP_Cookie"] = "$session_name=$session_id";
 
         $this->createExceptionData();
