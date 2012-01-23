@@ -67,11 +67,6 @@ class ExceptionalData {
                 "session" => $session
             );
 
-            if (!empty(Exceptional::$controller) && !empty(Exceptional::$action)) {
-                $data["request"]["controller"] = Exceptional::$controller;
-                $data["request"]["action"] = Exceptional::$action;
-            }
-
             $params = array_merge($_GET, $_POST);
 
             foreach (Exceptional::$blacklist as $filter) {
@@ -81,6 +76,15 @@ class ExceptionalData {
             if (!empty($params)) {
                 $data["request"]["parameters"] = $params;
             }
+        }
+
+        // controller and action
+        if (!empty(Exceptional::$controller) && !empty(Exceptional::$action)) {
+            if (!isset($data["request"])) {
+                $data["request"] = array();
+            }
+            $data["request"]["controller"] = Exceptional::$controller;
+            $data["request"]["action"] = Exceptional::$action;
         }
 
         $this->data = $data;
