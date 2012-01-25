@@ -77,15 +77,12 @@ class ExceptionalData {
                 $data["request"]["parameters"] = $params;
             }
         }
-
-        // controller and action
-        if (!empty(Exceptional::$controller) && !empty(Exceptional::$action)) {
-            if (!isset($data["request"])) {
-                $data["request"] = array();
-            }
-            $data["request"]["controller"] = Exceptional::$controller;
-            $data["request"]["action"] = Exceptional::$action;
+        else {
+          $data["request"] = array();
         }
+
+        $data["request"]["controller"] = Exceptional::$controller;
+        $data["request"]["action"] = Exceptional::$action;
 
         $this->data = $data;
     }
