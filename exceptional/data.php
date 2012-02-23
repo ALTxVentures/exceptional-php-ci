@@ -19,7 +19,7 @@ class ExceptionalData {
 
         // exception data
         $message = $this->exception->getMessage();
-        $now = date("c");
+        $now = gmdate("c");
 
         // spoof 404 error
         $error_class = get_class($this->exception);
