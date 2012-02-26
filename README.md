@@ -4,6 +4,7 @@ The power of [Exceptional](http://getexceptional.com) for PHP using CodeIginiter
 
 ## Super simple setup
 Add the following 2 arrays in your CI's configuration file (application/config/config.php)
+
 ```php
 $config['exceptional_api'] ="YOUR-API-KEY";
 $config['exceptional_use_ssl'] = false;
