@@ -1,4 +1,5 @@
 <?php
+if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 
 /*
  * Require files
@@ -22,8 +23,8 @@ class Exceptional {
     static $use_ssl;
 
     static $host = "plugin.getexceptional.com";
-    static $client_name = "exceptional-php";
-    static $version = "1.5";
+    static $client_name = "exceptional-php  (CI Edition)";
+    static $version = "1.5_CI";
     static $protocol_version = 6;
 
     static $controller;
@@ -31,6 +32,35 @@ class Exceptional {
     static $context;
 
     static $blacklist = array();
+
+	 /*	
+     *	CodeIgnitier Library Auto Contrsuct
+     */
+    
+    public function __construct()
+    {
+    	$CI =& get_instance();
+    	$this::setup($CI->config->item('exceptional_api'), $CI->config->item('exceptional_use_ssl'));
+    	$this::$controller = $CI->router->class;
+    	$this::$action = $CI->router->method;
+    }
+    
+	/*
+     *	blacklist function for CI
+     */
+    public function addBlacklist($filters = array())
+    {
+    	$this::blacklist($filters);
+    }
+    
+	/*
+     *	addContext function for CI
+     */
+    public function addContext($data = array())
+    {
+    	$this::context($data);
+    }
+	
 
     /*
      * Installs Exceptional as the default exception handler
