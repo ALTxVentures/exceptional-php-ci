@@ -1,40 +1,44 @@
-# Exceptional PHP
+# Exceptional PHP (CI Edition)
 
-The power of [Exceptional](http://getexceptional.com) for PHP
+The power of [Exceptional](http://getexceptional.com) for PHP using CodeIginiter Framework
 
 ## Super simple setup
-
+Add the following 2 arrays in your CI's configuration file (application/config/config.php)
 ```php
-require "path/to/exceptional.php";
-Exceptional::setup("YOUR-API-KEY");
+$config['exceptional_api'] ="YOUR-API-KEY";
+$config['exceptional_use_ssl'] = false;
 ```
 
 You can turn off exception notifications by passing an empty string as the API key.  This is great for development.
 
 ```php
 if (PHP_ENV == "production") {
-  $api_key = "YOUR-API-KEY";
+	$config['exceptional_api'] ="YOUR-API-KEY";
 }
 else {
-  $api_key = "";
+	$config['exceptional_api'] ="";
 }
-
-Exceptional::setup($api_key);
 ```
 
-You can turn on SSL by setting the second parameter to `true`.
+You can turn on SSL by setting the $config['exceptional_use_ssl'] to `true`.
 
 ```php
-Exceptional::setup($api_key, true);
+$config['exceptional_use_ssl'] = true;
 ```
+
+You can auto-load the exceptional library by adding it in the autoload.php file (application/config/autoload.php)
+
+```php
+$autoload['libraries'] = array('exceptional');
+```
+
 
 ## Filtering sensitive data
 
 You can blacklist sensitive fields from being submitted to Exceptional:
 
 ```
-Exceptional::setup($api_key);
-Exceptional::blacklist(array('password', 'creditcardnumber'));
+$this->exceptional->addBlacklist(array('password', 'creditcardnumber'));
 ```
 
 ## Exceptions and errors
@@ -63,16 +67,7 @@ throw new Http404Error();
 $context = array(
     "user_id" => 1
 );
-Exceptional::context($context);
+$this->exceptional->addContext($context);
 ```
 
 See the [Exceptional documentation](http://docs.getexceptional.com/extras/context/) for more details.
-
-## Controller + action support
-
-You can include the controller and action names in your exceptions for easier debugging.
-
-```php
-Exceptional::$controller = "welcome";
-Exceptional::$action = "index";
-```
