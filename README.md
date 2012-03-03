@@ -1,6 +1,6 @@
 # Exceptional PHP (CI Edition)
 
-The power of [Exceptional](http://getexceptional.com) for PHP using CodeIginiter Framework
+The power of [Exceptional](http://getexceptional.com) for PHP using CodeIgniter Framework
 
 ## Super simple setup
 Add the following 2 arrays in your CI's configuration file (application/config/config.php)
